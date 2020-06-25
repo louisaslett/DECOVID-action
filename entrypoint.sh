@@ -7,6 +7,8 @@ git status -v
 echo "==="
 echo $GITHUB_SHA
 echo "==="
+git log|head
+echo "==="
 git diff-tree --no-commit-id --name-only -r $GITHUB_SHA
 echo "==="
 
