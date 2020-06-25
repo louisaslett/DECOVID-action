@@ -44,6 +44,15 @@ while x= read -r drf; do
 
   mv DRF.pdf ${chg}_DRF.pdf
   mv DRF.html ${chg}_DRF.html
+  mv DRF.md ${chg}_DRF.md
+
+  git config --local user.email "DECOVID-action@master"
+  git config --local user.name "louis.bot"
+  git checkout $GITHUB_HEAD_REF
+  git add ${chg}_DRF.md
+  git commit -m "Autogen of ${chg} DRF"
+  git remote set-url origin https://x-access-token:${INPUT_GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
+  git push origin $GITHUB_HEAD_REF
 
   curl -F file=@${chg}_DRF.pdf -F channels=#drf -H "Authorization: Bearer ${INPUT_SLTK}" https://slack.com/api/files.upload
 
