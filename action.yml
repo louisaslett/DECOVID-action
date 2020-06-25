@@ -1,0 +1,7 @@
+name: "DECOVID Action Container"
+author: louisaslett
+description: "Used for building DRFs from markdown files in DECOVID project."
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
