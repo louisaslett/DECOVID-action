@@ -1,18 +1,5 @@
 #!/bin/bash
 
-pwd
-ls -al
-echo "==="
-git status -v
-echo "==="
-echo $GITHUB_SHA
-echo "==="
-git log|head
-echo "==="
-#git diff-tree --no-commit-id --name-only -r HEAD
-git diff --name-only HEAD~1
-echo "==="
-
 #chg=$(git diff-tree --no-commit-id --name-only -r HEAD |
 chg=$(git diff --name-only HEAD~1 |
   grep -E "^DRFs/([^/]+)/[^/]+$" |
@@ -50,7 +37,7 @@ while x= read -r drf; do
   git config --local user.name "louis.bot"
   git checkout $GITHUB_HEAD_REF
   git add ${chg}_DRF.md
-  git commit -m "Autogen of ${chg} DRF"
+  git commit -m ":rocket: Autogen of ${chg} DRF ... :robot:"
   git remote set-url origin https://x-access-token:${INPUT_GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
   git push origin $GITHUB_HEAD_REF
 
