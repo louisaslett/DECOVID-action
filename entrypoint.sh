@@ -3,6 +3,9 @@
 pwd
 ls -al
 echo "==="
+git status -v
+echo "==="
+echo "==="
 git diff-tree --no-commit-id --name-only -r $GITHUB_SHA
 echo "==="
 
