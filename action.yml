@@ -2,6 +2,14 @@ name: "DECOVID Action Container"
 author: louisaslett
 description: "Used for building DRFs from markdown files in DECOVID project."
 
+inputs:
+  SLTK:
+    description: "Slack API Token (provide via Settings -> Secrets)"
+    required: true
+  GITHUB_TOKEN:
+    description: "GITHUB_TOKEN secret ((automatically provided by Github)"
+    required: true
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
