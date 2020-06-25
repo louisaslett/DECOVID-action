@@ -1,5 +1,9 @@
 #!/bin/bash
 
+pwd
+ls -al
+git diff-tree --no-commit-id --name-only -r HEAD
+
 chg=$(git diff-tree --no-commit-id --name-only -r HEAD |
   grep -E "^DRFs/([^/]+)/[^/]+$" |
   sed -E "s;^DRFs/([^/]+)/[^/]+$;\1;" |
