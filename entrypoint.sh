@@ -45,7 +45,7 @@ while x= read -r drf; do
   mv DRF.pdf ${chg}_DRF.pdf
   mv DRF.html ${chg}_DRF.html
 
-  curl -F file=@${chg}_DRF.pdf -F channels=#drf -H "Authorization: Bearer ${SLTK}" https://slack.com/api/files.upload
+  curl -F file=@${chg}_DRF.pdf -F channels=#drf -H "Authorization: Bearer ${INPUT_SLTK}" https://slack.com/api/files.upload
 
   rm *.md; rm wc.dat; rm *.pdf; rm *.html; rm -rf ${drf}_process;
 done <<< "$chg"
