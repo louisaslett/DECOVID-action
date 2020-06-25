@@ -9,15 +9,19 @@ echo $GITHUB_SHA
 echo "==="
 git log|head
 echo "==="
-git diff-tree --no-commit-id --name-only -r $GITHUB_SHA
+#git diff-tree --no-commit-id --name-only -r HEAD
+git diff --name-only HEAD~1
 echo "==="
 
-chg=$(git diff-tree --no-commit-id --name-only -r $GITHUB_SHA |
+#chg=$(git diff-tree --no-commit-id --name-only -r HEAD |
+chg=$(git diff --name-only HEAD~1 |
   grep -E "^DRFs/([^/]+)/[^/]+$" |
   sed -E "s;^DRFs/([^/]+)/[^/]+$;\1;" |
   uniq)
 
-if [ -z "$var" ]; then
+echo $chg
+
+if [ -z "$chg" ]; then
   echo "No DRF changes detected"
   exit 0
 fi
