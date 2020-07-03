@@ -2,8 +2,8 @@
 
 #chg=$(git diff-tree --no-commit-id --name-only -r HEAD |
 chg=$(git diff --name-only HEAD~1 |
-  grep -E "^DRFs/([^/]+)/[^/]+$" |
-  sed -E "s;^DRFs/([^/]+)/[^/]+$;\1;" |
+  grep -E "^data-request-forms/([^/]+)/[^/]+$" |
+  sed -E "s;^data-request-forms/([^/]+)/[^/]+$;\1;" |
   uniq)
 
 echo $chg
@@ -13,9 +13,15 @@ if [ -z "$chg" ]; then
   exit 0
 fi
 
-drfQ=('A1_project_title.md' 'A2_research_questions_and_aims.md')
+cd data-request-forms/template
+drfQ=$(ls -1)
 
-cd DRFs
+git config --local user.email "DECOVID-action@master"
+git config --local user.name "louis.bot"
+git checkout $GITHUB_HEAD_REF
+git remote set-url origin https://x-access-token:${INPUT_GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
+
+cd ..
 while x= read -r drf; do
   echo "... $drf ..."
 
@@ -23,7 +29,7 @@ while x= read -r drf; do
   cd ${drf}_process
   sed -i '/^#/d' *.md
   sed -i 's/^/> /' *.md
-  cp *.md ..
+  cp * ..
   cd ..
   wc * > wc.dat
 
@@ -33,15 +39,11 @@ while x= read -r drf; do
   mv DRF.html ${chg}_DRF.html
   mv DRF.md ${chg}_DRF.md
 
-  git config --local user.email "DECOVID-action@master"
-  git config --local user.name "louis.bot"
-  git checkout $GITHUB_HEAD_REF
   git add ${chg}_DRF.md
   git commit -m ":rocket: Autogen of ${chg} DRF ... :robot:"
-  git remote set-url origin https://x-access-token:${INPUT_GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
   git push origin $GITHUB_HEAD_REF
 
-  curl -F file=@${chg}_DRF.pdf -F channels=#drf -H "Authorization: Bearer ${INPUT_SLTK}" https://slack.com/api/files.upload
+  # curl -F file=@${chg}_DRF.pdf -F channels=#drf -H "Authorization: Bearer ${INPUT_SLTK}" https://slack.com/api/files.upload
 
-  rm *.md; rm wc.dat; rm *.pdf; rm *.html; rm -rf ${drf}_process;
+  rm wc.dat *.csv A* B* C*; rm -rf ${drf}_process; #rm *.pdf; rm *.html;
 done <<< "$chg"
