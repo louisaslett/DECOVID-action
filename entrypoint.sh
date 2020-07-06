@@ -15,13 +15,13 @@ fi
 
 cd data-request-forms/template
 drfQ=$(ls -1)
+cd ..
 
 git config --local user.email "DECOVID-action@master"
 git config --local user.name "louis.bot"
 git checkout $GITHUB_HEAD_REF
 git remote set-url origin https://x-access-token:${INPUT_GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
 
-cd ..
 while x= read -r drf; do
   echo "... $drf ..."
 
@@ -35,15 +35,15 @@ while x= read -r drf; do
 
   Rscript DRF.R
 
-  mv DRF.pdf ${chg}_DRF.pdf
-  mv DRF.html ${chg}_DRF.html
-  mv DRF.md ${chg}_DRF.md
+  mv DRF.pdf ${drf}_DRF.pdf
+  mv DRF.html ${drf}_DRF.html
+  mv DRF.md ${drf}_DRF.md
 
-  git add ${chg}_DRF.md
-  git commit -m ":rocket: Autogen of ${chg} DRF ... :robot:"
+  git add ${drf}_DRF.md
+  git commit -m ":rocket: Autogen of ${drf} DRF ... :robot:"
   git push origin $GITHUB_HEAD_REF
 
-  curl -F file=@${chg}_DRF.pdf -F channels=#drf -H "Authorization: Bearer ${INPUT_SLTK}" https://slack.com/api/files.upload
+  curl -F file=@${drf}_DRF.pdf -F channels=#drf -H "Authorization: Bearer ${INPUT_SLTK}" https://slack.com/api/files.upload
 
   rm wc.dat *.csv A* B* C*; rm -rf ${drf}_process; #rm *.pdf; rm *.html;
 done <<< "$chg"
