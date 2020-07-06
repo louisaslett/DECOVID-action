@@ -43,7 +43,7 @@ while x= read -r drf; do
   git commit -m ":rocket: Autogen of ${chg} DRF ... :robot:"
   git push origin $GITHUB_HEAD_REF
 
-  # curl -F file=@${chg}_DRF.pdf -F channels=#drf -H "Authorization: Bearer ${INPUT_SLTK}" https://slack.com/api/files.upload
+  curl -F file=@${chg}_DRF.pdf -F channels=#drf -H "Authorization: Bearer ${INPUT_SLTK}" https://slack.com/api/files.upload
 
   rm wc.dat *.csv A* B* C*; rm -rf ${drf}_process; #rm *.pdf; rm *.html;
 done <<< "$chg"
